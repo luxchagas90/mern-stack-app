@@ -1,4 +1,5 @@
 import express, { json } from 'express';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 import { router as workoutRoutes } from './routes/workouts.js';
@@ -21,7 +22,15 @@ app.use((req, res, next) => {
 // routes
 app.use('/api/workouts/', workoutRoutes);
 
-// listen for requests
-app.listen(port, () => {
-    console.log('listening on port', port);
-})
+// connect to database
+mongoose.connect(process.env.DB_URI)
+    .then(() => {
+        // listen for requests
+        app.listen(port, () => {
+            console.log('connected to database and listening on port', port);
+        })
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+
