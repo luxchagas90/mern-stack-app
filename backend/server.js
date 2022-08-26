@@ -7,6 +7,7 @@ import { router as workoutRoutes } from './routes/workouts.js';
 // evironment variables
 dotenv.config();
 const port = process.env.PORT;
+const database = process.env.DB_URI;
 
 // express app
 const app = express();
@@ -23,7 +24,7 @@ app.use((req, res, next) => {
 app.use('/api/workouts/', workoutRoutes);
 
 // connect to database
-mongoose.connect(process.env.DB_URI)
+mongoose.connect(database)
     .then(() => {
         // listen for requests
         app.listen(port, () => {
